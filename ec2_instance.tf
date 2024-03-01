@@ -33,6 +33,14 @@ resource "aws_security_group" "network-security-group" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    description = "all traffic"
+    from_port = 0
+    to_port = 0
+    protocol = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
     Name = "ec2-inbound"
   }
@@ -48,7 +56,7 @@ resource "aws_instance" "myec2" {
   instance_type = var.ubuntu-instance-type
   key_name = aws_key_pair.ec2.key_name
   vpc_security_group_ids = [aws_security_group.network-security-group.id]
-  count = 3
+  count = 1
   tags = {
     Name = var.instance_names[count.index]
   }
