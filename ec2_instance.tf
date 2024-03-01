@@ -66,6 +66,14 @@ resource "aws_security_group" "network-security-group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "jenkins"
+    from_port = 8080
+    to_port = 8080
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     description = "all traffic"
     from_port = 0
