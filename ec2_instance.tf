@@ -34,6 +34,38 @@ resource "aws_security_group" "network-security-group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "Grafana"
+    from_port = 3000
+    to_port = 3000
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "prometheus"
+    from_port = 9090
+    to_port = 9090
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "alertmanager"
+    from_port = 9093
+    to_port = 9093
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "node exporter"
+    from_port = 9100
+    to_port = 9100
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     description = "all traffic"
     from_port = 0
@@ -56,7 +88,7 @@ resource "aws_instance" "myec2" {
   instance_type = var.ubuntu-instance-type
   key_name = aws_key_pair.ec2.key_name
   vpc_security_group_ids = [aws_security_group.network-security-group.id]
-  count = 1
+  count = 3
   tags = {
     Name = var.instance_names[count.index]
   }
