@@ -1,4 +1,4 @@
-# Deploy EC2 instance with keypair, Elastic IP, Securitygroups, and EBS volumes
+# Deploy EC2 instance with keypair, Elastic IP, Securitygroups, EBS volumes and create snapshots of EBS.
 provider "aws" {
   region = "ap-south-1"
 }
@@ -95,7 +95,7 @@ resource "aws_instance" "myec2" {
   }
 
 resource "aws_ebs_volume" "volume1" {
-  availability_zone = "ap-south-1a"
+  availability_zone = "ap-south-1b"
   size = 25
   tags = {
     Name = "ec2-volume" 
@@ -115,4 +115,8 @@ resource "aws_eip" "instance-elastic-ip" {
 resource "aws_eip_association" "instance-eip-allocation" {
   instance_id = aws_instance.myec2.id
   allocation_id = aws_eip.instance-elastic-ip.id
+}
+
+resource "aws_ebs_snapshot" "my_snapshot" {
+  volume_id = aws_ebs_volume.volume1.id
 }
